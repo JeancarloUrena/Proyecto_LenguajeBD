@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Película</title>
+    <link rel="stylesheet"  href="css/agregar.css">
+</head>
+<body>
+    <h1>Agregar Película</h1>
+    <form action="/agregar-pelicula" method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <br>
+        <label for="director">Director:</label>
+        <input type="text" id="director" name="director" required>
+        <br>
+        <label for="genero">Género:</label>
+        <input type="text" id="genero" name="genero" required>
+        <br>
+        <label for="fecha_estreno">Fecha de Estreno:</label>
+        <input type="date" id="fecha_estreno" name="fecha_estreno" required>
+        <br>
+        <label for="clasificacion">Clasificación:</label>
+        <input type="text" id="clasificacion" name="clasificacion" required>
+        <br>
+        <button type="submit">Agregar Película</button>
+    </form>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo"></div>
+            <ul class="footer-menu">
+                <li><p>Derechos Reservados</p></li>
+                <li><p>2023</p></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

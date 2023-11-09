@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Inicio</title>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">Cine Fortuna</a>
+            <ul class="menu">
+                <li><a href="/agregar-pelicula">Agregar Películas</a></li>
+                <li><a href="#">Reservar Entradas</a></li>
+                <li><a href="/login">Inicio Sesión</a></li>
+                <li><a href="#">Comentarios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="slideshow-container">
+        <div class="mySlides">
+            <img src="img/bloodborne_2880x1800_xtrafondos.com.jpg" alt="Imagen 1">
+            <div class="caption-container">
+            </div>
+        </div>
+
+        <div class="mySlides">
+            <img src="img/tY4ueSDPgmg65EAuCQVUF9MCv0S.jpg" alt="Imagen 2">
+            <div class="caption-container">
+            </div>
+        </div>
+
+        <div class="mySlides">
+            <img src="img/TFTfzrkX8L7bAKUcch6qLmjpLu.jpg" alt="Imagen 3">
+            <div class="caption-container">
+            </div>
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+    <br>
+
+    <div style="text-align: center;">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+
+    <h1>Trailers de peliculas</h1>
+    <div class="grid-container">
+        <div class="grid-item">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/_iH0UBYDI4g" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="grid-item">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/UOrNESb8T4I" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="grid-item">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/RV9L7ui9Cn8" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo"></div>
+            <ul class="footer-menu">
+                <li><p>Derechos Reservados</p></li>
+                <li><p>2023</p></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides() {
+            let i;
+            const slides = document.getElementsByClassName("mySlides");
+            const dots = document.getElementsByClassName("dot");
+
+            if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+
+            if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            }
+
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
+            slides[slideIndex].style.display = "block";
+            dots[slideIndex].className += " active";
+            slideIndex++;
+            setTimeout(showSlides, 5000); // Cambia la imagen cada 5 segundos
+        }
+    </script>
+</body>
+</html>
