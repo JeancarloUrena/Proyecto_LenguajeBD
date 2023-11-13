@@ -1,21 +1,24 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const oracledb = require('oracledb'); 
+const oracledb = require('oracledb');
 const app = express();
 const port = 3000;
+const cors = require('cors');
+
 
 const dbConfig = {
     user: 'Cinema',
     password: '123',
-    connectString: '//localhost:1521/orcl.lan' 
+    connectString: '//localhost:1521/orcl.lan'
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'css')));
 app.use(express.static(__dirname));
+app.use(cors());
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname,'inicio.html')); 
+    res.sendFile(path.join(__dirname, 'inicio.html'));
 });
 
 // Carga la página de agregar películas para '/agregar-pelicula'
@@ -25,7 +28,7 @@ app.get('/agregar-pelicula', (req, res) => {
 });
 
 app.post('/agregar-pelicula', (req, res) => {
-    const { nombre, director, genero,fecha_estreno,clasificacion} = req.body;
+    const { nombre, director, genero, fecha_estreno, clasificacion } = req.body;
 
 
     oracledb.getConnection(dbConfig, (error, connection) => {
@@ -35,7 +38,7 @@ app.post('/agregar-pelicula', (req, res) => {
             return;
         }
 
-        
+
         connection.execute(
             `INSERT INTO PELICULAS (nombre, director, genero, fecha_estreno, clasificacion) VALUES (:nombre, :director, :genero, TO_DATE(:fechaEstreno, 'YYYY-MM-DD'), :clasificacion)`,
             [nombre, director, genero, fecha_estreno, clasificacion],
@@ -54,7 +57,7 @@ app.post('/agregar-pelicula', (req, res) => {
                             console.log('Commit realizado con éxito.');
                             res.send('Datos agregados exitosamente.');
                         }
-        
+
                         connection.close((cerrarError) => {
                             if (cerrarError) {
                                 console.error('Error al cerrar la conexión:', cerrarError);
@@ -73,7 +76,7 @@ app.get('/agregar-cliente', (req, res) => {
 });
 
 app.post('/agregar-cliente', (req, res) => {
-    const { cedula, nombre, apellido1,apellido2,email,password} = req.body;
+    const { cedula, nombre, apellido1, apellido2, email, password } = req.body;
 
 
     oracledb.getConnection(dbConfig, (error, connection) => {
@@ -83,10 +86,10 @@ app.post('/agregar-cliente', (req, res) => {
             return;
         }
 
-        
+
         connection.execute(
             `INSERT INTO CLIENTES (numero_cedula, nombre, apellido1, apellido2, email,contrasena) VALUES (:numero_cedula, :nombre, :apellido1, :apellido2, :email, :contrasena)`,
-            [ cedula, nombre, apellido1,apellido2,email,password],
+            [cedula, nombre, apellido1, apellido2, email, password],
             (err, result) => {
                 if (err) {
                     console.error('Error al agregar datos a la base de datos:', err);
@@ -102,7 +105,7 @@ app.post('/agregar-cliente', (req, res) => {
                             console.log('Commit realizado con éxito.');
                             res.send('Datos agregados exitosamente.');
                         }
-        
+
                         connection.close((cerrarError) => {
                             if (cerrarError) {
                                 console.error('Error al cerrar la conexión:', cerrarError);
@@ -141,6 +144,45 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         console.error('Error de base de datos:', error);
         res.status(500).send('Error interno del servidor.');
+    }
+});
+
+app.get('/peliculas', async (req, res) => {
+    let connection;
+
+    try {
+        connection = await oracledb.getConnection(dbConfig);
+
+        const result = await connection.execute('SELECT * FROM PELICULAS');
+
+        // Verifica si hay resultados
+        if (result.rows.length === 0) {
+            res.status(404).send('No hay películas disponibles.');
+            return;
+        }
+
+        // Transforma el resultado de la base de datos en un formato más amigable
+        const peliculas = result.rows.map(row => ({
+            ID_PELICULA: row[0],
+            NOMBRE: row[1],
+            DIRECTOR: row[2],
+            GENERO: row[3],
+            FECHA_ESTRENO: row[4],
+            CLASIFICACION: row[5]
+        }));
+
+        res.json(peliculas);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error al obtener datos de la base de datos.');
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error(err.message);
+            }
+        }
     }
 });
 

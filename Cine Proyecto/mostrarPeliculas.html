@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Mostrar Datos Oracle</title>
+    <!-- Incluir jQuery desde el CDN de Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <h1>Listado de Películas</h1>
+
+    <div id="lista-peliculas" class="card-container"></div>
+
+    <script>
+        fetch('http://localhost:3000/peliculas')
+            .then(response => response.json())
+            .then(data => {
+                
+                const listaPeliculas = document.getElementById('lista-peliculas');
+
+                data.forEach(pelicula => {
+                    
+                    const peliculaCard = document.createElement('div');
+                    peliculaCard.className = 'pelicula-card';
+
+                    
+                    peliculaCard.innerHTML = `
+                        <h3>ID: ${pelicula.ID_PELICULA}</h3>
+                        <p><strong>Nombre:</strong> ${pelicula.NOMBRE}</p>
+                        <p><strong>Director:</strong> ${pelicula.DIRECTOR}</p>
+                        <p><strong>Género:</strong> ${pelicula.GENERO}</p>
+                        <p><strong>Fecha de Estreno:</strong> ${pelicula.FECHA_ESTRENO}</p>
+                        <p><strong>Clasificación:</strong> ${pelicula.CLASIFICACION}</p>
+                    `;
+
+                    // Agregar la tarjeta de película a la lista
+                    listaPeliculas.appendChild(peliculaCard);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+
+
+</body>
+</html>
