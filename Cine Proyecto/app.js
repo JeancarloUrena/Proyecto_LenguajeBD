@@ -186,6 +186,125 @@ app.get('/peliculas', async (req, res) => {
     }
 });
 
+app.get('/actualizarCliente', (req, res) => {
+    res.sendFile(__dirname + '/actualizarcliente.html');
+});
+
+// Ruta para manejar la actualización del cliente
+app.post('/actualizarCliente', async (req, res) => {
+    const { numeroCedula, nombre, apellido1, apellido2, email, contrasena } = req.body;
+
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+
+        // Ejecutar el procedimiento almacenado para actualizar el cliente
+        const result = await connection.execute(
+            `BEGIN
+                ACTUALIZAR_CLIENTE(:numeroCedula, :nombre, :apellido1, :apellido2, :email, :contrasena);
+            END;`,
+            { numeroCedula, nombre, apellido1, apellido2, email, contrasena }
+        );
+
+        await connection.commit(); // Commit explícito después de la actualización
+        await connection.close();
+
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al actualizar el cliente.' });
+    }
+});
+
+app.get('/eliminarCliente', (req, res) => {
+    res.sendFile(__dirname + '/eliminar.html');
+});
+// Procedimiento de Eliminación
+app.post('/eliminarCliente', async (req, res) => {
+    const { numeroCedula } = req.body;
+
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+        const result = await connection.execute(
+            `BEGIN
+            ELIMINAR_CLIENTE(:numero_Cedula);
+            END;`,
+            { numeroCedula }
+        );
+
+        await connection.close();
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al eliminar el cliente.' });
+    }
+});
+
+app.get('/actualizarPelicula', (req, res) => {
+    res.sendFile(__dirname + '/actualizarpelicula.html');
+});
+
+// Ruta para manejar la actualización del cliente
+app.post('/actualizarPelicula', async (req, res) => {
+    const { id_Pelicula, nombre, director, genero, fechaEstreno, clasificacion } = req.body;
+
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+
+        // Ejecutar el procedimiento almacenado para actualizar la película
+        const result = await connection.execute(
+            `BEGIN
+            ACTUALIZAR_PELICULA(:P_ID_PELICULA, :P_NOMBRE, :P_DIRECTOR, :P_GENERO, TO_DATE(:P_FECHA_ESTRENO, 'YYYY-MM-DD'), :P_CLASIFICACION);
+            END;`,
+            {
+                P_ID_PELICULA: id_Pelicula,
+                P_NOMBRE: nombre,
+                P_DIRECTOR: director,
+                P_GENERO: genero,
+                P_FECHA_ESTRENO: fechaEstreno,
+                P_CLASIFICACION: clasificacion
+            }
+        );
+
+        await connection.commit(); // Commit explícito después de la actualización
+        await connection.close();
+
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al actualizar la película.' });
+    }
+});
+
+app.get('/eliminarPelicula', (req, res) => {
+    res.sendFile(__dirname + '/eliminarpelicula.html');
+});
+
+app.post('/eliminarPelicula', async (req, res) => {
+    const { id_Pelicula } = req.body;
+
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+
+        const result = await connection.execute(
+            `BEGIN
+                ELIMINAR_PELICULA(:P_ID_PELICULA);
+            END;`,
+            {
+                P_ID_PELICULA: id_Pelicula
+            }
+        );
+
+        await connection.commit(); 
+        await connection.close();
+
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al eliminar la película.' });
+    }
+});
+
+
 
 app.listen(port, () => {
     console.log(`El servidor Express está funcionando en http://localhost:${port}`);

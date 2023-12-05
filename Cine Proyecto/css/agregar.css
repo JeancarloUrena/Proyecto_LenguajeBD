@@ -143,3 +143,51 @@ button {
 button:hover {
     background-color: #2980b9;
 }
+.boton-enlace {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #4CAF50; 
+    border-radius: 5px;
+    border: 2px solid #4CAF50; 
+    transition: background-color 0.3s ease; 
+}
+
+.boton-enlace:hover {
+    background-color: #45a049; 
+}
+.boton-enlace1 {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(69, 98, 160); 
+    border-radius: 5px;
+    border: 2px solid rgb(69, 98, 160); 
+    transition: background-color 0.3s ease; 
+}
+
+.boton-enlace1:hover {
+    background-color: rgb(69, 98, 160); 
+}
+.boton-enlace2 {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgb(160, 80, 69); 
+    border-radius: 5px;
+    border: 2px solid rgb(160, 80, 69); 
+    transition: background-color 0.3s ease; 
+}
+
+.boton-enlace2:hover {
+    background-color: rgb(160, 80, 69);  
+}
