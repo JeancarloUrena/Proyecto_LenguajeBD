@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Inventario</title>
+    <link rel="stylesheet"  href="css/agregar.css">
+</head>
+<body>
+    <h1>Agregar Inventario</h1>
+    <form action="/agregar-inventario" method="POST" >
+        <label for="producto">Producto:</label>
+        <input type="text" id="producto" name="producto" required>
+        <br>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" required>
+        <br>
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" name="precio" required>
+        <br>
+        <button type="submit">Agregar Inventario</button>
+        <a href="actualizarinventario.html" class="boton-enlace"> Actualizar Inventario</a>
+        <a href="eliminarinventario.html" class="boton-enlace2"> Eliminar Inventario</a>
+    </form>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo"></div>
+            <ul class="footer-menu">
+                <li><p>Derechos Reservados</p></li>
+                <li><p>2023</p></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

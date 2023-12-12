@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas y Horarios</title>
+    <style>
+        body{
+            background-color: cadetblue;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Información de Salas y Horarios</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Número de Sala</th>
+                <th>Tipo de Pantalla</th>
+                <th>Horario</th>
+            </tr>
+        </thead>
+        <tbody id="tablaSalasHorarios">
+            
+        </tbody>
+    </table>
+
+    <script>
+        const tablaSalasHorarios = document.getElementById('tablaSalasHorarios');
+    
+        fetch('http://localhost:3000/salashorarios')  
+            .then((response) => {
+                console.log('Respuesta del servidor:', response);
+                return response.json();
+            })
+            .then((jsonResponse) => {
+                jsonResponse.forEach((registro) => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${registro.NUMERO_SALA}</td>
+                        <td>${registro.TIPO_PANTALLA}</td>
+                        <td>${registro.FECHA_HORA}</td>
+                    `;
+                    tablaSalasHorarios.appendChild(fila);
+                });
+            })
+            .catch((error) => console.error('Error al cargar las salas y horarios:', error));
+    </script>
+</body>
+</html>

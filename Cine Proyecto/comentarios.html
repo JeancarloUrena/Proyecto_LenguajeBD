@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/com.css">
+    <title>Sistema de Comentarios</title>
+</head>
+<body>
+    <div id="comentarios-container">
+        <!-- Aquí se cargarán los comentarios -->
+    </div>
+
+    <form id="formulario-comentario">
+        <textarea id="texto-comentario" placeholder="Escribe tu comentario"></textarea>
+        <button type="submit">Enviar Comentario</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $(document).ready(function () {
+    // Cargar comentarios al cargar la página
+    cargarComentarios();
+
+    // Enviar formulario al hacer clic en "Enviar Comentario"
+    $('#formulario-comentario').submit(function (e) {
+        e.preventDefault();
+
+        const nuevoComentario = $('#texto-comentario').val();
+
+        // Validar que el comentario no esté vacío
+        if (nuevoComentario.trim() === '') {
+            alert('Por favor, escribe un comentario.');
+            return;
+        }
+
+        // Enviar el comentario al servidor
+        agregarComentario(nuevoComentario);
+    });
+
+    function cargarComentarios() {
+        // Obtener comentarios del servidor
+        $.get('/comentarios', function (comentarios) {
+            // Limpiar contenedor de comentarios
+            $('#comentarios-container').empty();
+
+            // Mostrar cada comentario en el contenedor
+            comentarios.forEach(function (comentario) {
+                $('#comentarios-container').append('<p>' + comentario + '</p>');
+            });
+        });
+    }
+
+    function agregarComentario(comentario) {
+        // Enviar comentario al servidor
+        $.ajax({
+            type: 'POST',
+            url: '/comentarios',
+            data: { comentario: comentario },
+            success: function (respuesta) {
+                // Mostrar mensaje de éxito
+                alert(respuesta.mensaje);
+
+                // Limpiar y recargar comentarios
+                $('#texto-comentario').val('');
+                cargarComentarios();
+            },
+            error: function (error) {
+                // Mostrar mensaje de error en la consola
+                console.error('Error al enviar el comentario:', error);
+            }
+        });
+    }
+});
+    </script>
+
+</body>
+</html>
